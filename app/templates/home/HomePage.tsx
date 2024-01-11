@@ -1,15 +1,15 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Layout from '../../components/Layout/Layout'
 import Carusel from './carusel/Carusel'
 import HomeBox from './HomeBox'
-import { useProfile } from '../../hooks/useProfile'
 import { useTraining } from '../../hooks/useTraining'
-import { TrainingDayInterface } from '../../types/calendar.types'
 import { TODAY, TOMORROW } from '../../helpers/getDate'
+import { UserContext } from '../../providers/UserProvider'
+import { useUser } from '../../hooks/useUser'
 
 const HomePage: FunctionComponent = () => {
-  const { calendar, fullUserInfo } = useProfile()
+  const { fullUserInfo } = useUser()
   const { todayTraining, nextTraining } = useTraining()
 
   const isTrainingDay = () => {
@@ -44,7 +44,7 @@ const HomePage: FunctionComponent = () => {
           />
         ) : (
           <HomeBox
-            title="Следующая тренировка:"
+            title="Тренировка не запланирована"
             link={'Calendar'}
             titleButton={'Запланировать'}
             isDate={isTrainingDay}
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     color: '#FFF',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
   },
   button: {
     borderColor: '#e8aa00',

@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderRadius: 30,
     position: 'absolute',
-    bottom: -20,
+    bottom: -10,
     left: 30,
   },
   buttonText: {

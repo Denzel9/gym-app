@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
 
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native'
-import Calendar from '../../templates/calendar/CalendarPage'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Footer from '../Layout/footer/Footer'
 
@@ -11,6 +10,9 @@ import CalendarPage from '../../templates/calendar/CalendarPage'
 import ProfilePage from '../../templates/profile/ProfilePage'
 import TrainingPage from '../../templates/training/TrainingPage'
 import AuthPage from '../../templates/auth/AuthPage'
+import PlaningTraining from '../../templates/planing-training/PlaningTraining'
+import Header from '../Layout/Header'
+import LastTrainingReport from '../../templates/last-training-report/LastTrainingReport'
 
 const Navigator: FunctionComponent = () => {
   const Stack = createNativeStackNavigator()
@@ -33,6 +35,7 @@ const Navigator: FunctionComponent = () => {
 
   return (
     <>
+      {user && <Header />}
       <NavigationContainer ref={ref}>
         <Stack.Navigator
           screenOptions={{
@@ -49,6 +52,8 @@ const Navigator: FunctionComponent = () => {
               />
               <Stack.Screen name="Training" component={TrainingPage} />
               <Stack.Screen name="Profile" component={ProfilePage} />
+              <Stack.Screen name="PlaningTraining" component={PlaningTraining} />
+              <Stack.Screen name="LastTrainingReport" component={LastTrainingReport} />
             </>
           ) : (
             <Stack.Screen name="Auth" component={AuthPage} />

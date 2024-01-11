@@ -1,9 +1,9 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useContext } from 'react'
 import CalendarItem from './CalendarItem'
 import { getMonthDays, weekDays } from '../../../helpers/getDate'
-import { useProfile } from '../../../hooks/useProfile'
 import { StyleSheet, Text, View } from 'react-native'
 import { DARK, WHITE } from '../../../consts/colors'
+import { UserContext } from '../../../providers/UserProvider'
 
 const Calendar: FunctionComponent<{
   dayfilter: string
@@ -13,8 +13,8 @@ const Calendar: FunctionComponent<{
   setSelectedDay(selectedDay: number): void
   yearFilter: number
 }> = ({ dayfilter, setDayFilter, monthFilter, selectedDay, setSelectedDay, yearFilter }) => {
-  const { calendar } = useProfile()
-  const trainingDay = calendar?.calendar?.filter((el) => el.training.length)
+  const { calendar } = useContext(UserContext)
+  const trainingDay = calendar?.filter((el) => el.training.length)
 
   return (
     <View>
@@ -27,7 +27,7 @@ const Calendar: FunctionComponent<{
           )
         })}
       </View>
-      <View style={styles.days}>
+      <View style={styles.itemsWrap}>
         {getMonthDays(monthFilter).map((el) => {
           return (
             <CalendarItem
@@ -55,17 +55,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: DARK,
   },
-  days: {
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: 5,
-    columnGap: 18,
-  },
   text: {
     textAlign: 'center',
     color: WHITE,
+    width: 50,
     padding: 5,
+  },
+  itemsWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 10,
+    flexWrap: 'wrap',
+    rowGap: 5,
+    columnGap: 4,
   },
 })
 

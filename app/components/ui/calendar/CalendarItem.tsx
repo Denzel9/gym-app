@@ -1,9 +1,10 @@
 import { FunctionComponent, useEffect } from 'react'
-import classNames from 'classnames'
 import { TODAY_NUMBER, currentMonth } from '../../../helpers/getDate'
 import { TrainingDayInterface } from '../../../types/calendar.types'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { DARK, GOLD, WHITE } from '../../../consts/colors'
+
+import { Dimensions } from 'react-native'
 
 const CalendarItem: FunctionComponent<{
   title: number
@@ -37,10 +38,11 @@ const CalendarItem: FunctionComponent<{
     setDayFilter(String(title).padStart(2, '0'))
     setSelectedDay(title)
   }
+
   return (
     <TouchableOpacity
       style={[
-        styles.item,
+        styles.singleItem,
         +TODAY_NUMBER === title && monthFilter === currentMonth && styles.todayDay,
         selectedDay === title && styles.selectedDay,
         +dayfilter === title && styles.dayFilter,
@@ -53,18 +55,30 @@ const CalendarItem: FunctionComponent<{
   )
 }
 
+const { width } = Dimensions.get('window')
+const windowWidth = width
+
+const gap = 0
+const itemPerRow = 8
+
+const totalGapSize = (itemPerRow - 1) * gap
+
+const childWidth = (windowWidth - totalGapSize) / itemPerRow
+
 const styles = StyleSheet.create({
-  item: {
-    width: 60,
+  singleItem: {
+    marginHorizontal: gap / 2,
+    minWidth: childWidth,
+    maxWidth: childWidth,
     backgroundColor: DARK,
+    height: 30,
     textAlign: 'center',
+    justifyContent: 'center',
     fontSize: 16,
-    marginTop: 5,
-    position: 'relative',
   },
   itemText: { color: WHITE, textAlign: 'center', fontSize: 20 },
   todayDay: {
-    backgroundColor: '#0ac23e',
+    backgroundColor: '#046920',
   },
   selectedDay: { backgroundColor: GOLD },
   dayFilter: { backgroundColor: GOLD },

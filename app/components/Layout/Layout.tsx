@@ -19,13 +19,16 @@ const Layout: FunctionComponent<ILayout> = ({ children, isScrollView = false }) 
         backgroundColor: '#383737',
         height: '100%',
         width: '100%',
-        paddingTop: 45,
       }}
     >
-      <Header />
       {isScrollView ? (
         <Container>
-          <ScrollView>{children}</ScrollView>
+          <ScrollView
+            style={{ marginBottom: 70, height: '100%' }}
+            showsVerticalScrollIndicator={false}
+          >
+            {children}
+          </ScrollView>
         </Container>
       ) : (
         <Container>{children}</Container>

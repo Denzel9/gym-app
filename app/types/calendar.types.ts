@@ -6,9 +6,9 @@ export interface CalendarInterface {
 
 export interface TrainingDayInterface {
   date: string
-  time: string
   type: string
   training: DayTraining[]
+  docId?: string
 }
 
 export interface DayTraining {
@@ -17,6 +17,6 @@ export interface DayTraining {
 }
 
 export interface SetsExercise {
-  repeat: number
+  repeats: number
   weight: number
 }

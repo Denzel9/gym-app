@@ -6,6 +6,7 @@ import Field from '../../components/ui/Field'
 import HeaderText from '../../components/ui/HeaderText'
 import { DARK, GOLD, WHITE } from '../../consts/colors'
 import { useAuth } from '../../hooks/useAuth'
+import Logo from '../../components/ui/Logo'
 
 interface IData {
   email: string
@@ -33,9 +34,12 @@ const AuthPage: FunctionComponent = () => {
     <Layout>
       <View>
         {isLoading ? (
-          <Loader />
+          <View style={styles.container}>
+            <Loader />
+          </View>
         ) : (
           <View style={styles.container}>
+            <Logo />
             <HeaderText title={isReg ? 'Зарегистрироваться' : 'Войти'} />
             <Field
               value={data.email}
@@ -63,10 +67,11 @@ const AuthPage: FunctionComponent = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '90%',
+    height: '100%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: 10,
   },
   button: {
     backgroundColor: DARK,

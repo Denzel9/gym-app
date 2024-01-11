@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Layout from '../../components/Layout/Layout'
 import HeaderText from '../../components/ui/HeaderText'
@@ -7,11 +7,25 @@ import { AntDesign } from '@expo/vector-icons'
 import { WHITE } from '../../consts/colors'
 import Calendar from '../../components/ui/calendar/Calendar'
 
-const CalendarPage: FunctionComponent<any> = ({ route }) => {
+import { useTraining } from '../../hooks/useTraining'
+import CalendarDay from './calendar-day/CalendarDay'
+import { TrainingDayInterface } from '../../types/calendar.types'
+import Button from '../../components/ui/Button'
+
+const CalendarPage: FunctionComponent<any> = () => {
   const [yearFilter, setYearFilter] = useState(currentYear)
   const [monthFilter, setMonthFilter] = useState(+String(currentMonth).padStart(2, '0'))
   const [dayfilter, setDayFilter] = useState(TODAY_NUMBER)
   const [selectedDay, setSelectedDay] = useState(0)
+  const [trainingDay, setTrainingDay] = useState<TrainingDayInterface>({} as TrainingDayInterface)
+
+  const { getTraining, isLoading, deleteTrainingDay } = useTraining()
+
+  const availableDay = () => {
+    if (yearFilter > currentYear) return true
+    if (monthFilter > currentMonth) return true
+    if (dayfilter >= TODAY_NUMBER) return true
+  }
 
   const handleAddYear = () => {
     setMonthFilter(0)
@@ -22,8 +36,15 @@ const CalendarPage: FunctionComponent<any> = ({ route }) => {
     setMonthFilter(11)
     setYearFilter(yearFilter - 1)
   }
+
+  useEffect(() => {
+    setTrainingDay(
+      getTraining(`${dayfilter}.${String(monthFilter + 1).padStart(2, '0')}.${yearFilter}`)!
+    )
+  }, [dayfilter, monthFilter, yearFilter, isLoading])
+
   return (
-    <Layout>
+    <Layout isScrollView>
       <View style={styles.calendarNavigation}>
         <HeaderText title="Календарь" />
         <View style={styles.monthNavigation}>
@@ -52,37 +73,20 @@ const CalendarPage: FunctionComponent<any> = ({ route }) => {
         setSelectedDay={setSelectedDay}
         yearFilter={yearFilter}
       />
-      {/* <CalendarDay
-          availableDay={availableDay}
-          monthFilter={monthFilter}
-          yearFilter={yearFilter}
-          dayfilter={dayfilter}
-          dayTraining={trainingDay!}
-          setPlan={setPlan}
-          date={`${dayfilter}.${String(currentMonth + 1).padStart(2, '0')}.${currentYear}`}
-        /> */}
-      {/* {availableDay() && !!trainingDay?.training?.length ? (
-          <div className=" flex justify-center">
-            <button
-              onClick={() => deleteTraining()}
-              className=" bg-base px-4 py-2 rounded-lg border border-gold mt-5 "
-            >
-              Отменить тренировку
-            </button>
-          </div>
-        ) : null} */}
-      {/* <CalendarPlaningDay
-          monthFilter={monthFilter}
-          yearFilter={yearFilter}
-          setTrainingType={setTrainingType}
-          trainingType={trainingType}
-          setPlan={setPlan}
-          plan={plan}
-          id={id}
-          dayfilter={dayfilter}
-          calendar={calendar}
-          date={`${dayfilter} ${getMonth(currentMonth)}`}
-        /> */}
+      <CalendarDay
+        availableDay={availableDay}
+        monthFilter={monthFilter}
+        yearFilter={yearFilter}
+        dayfilter={dayfilter}
+        dayTraining={trainingDay}
+        date={`${dayfilter}.${String(currentMonth + 1).padStart(2, '0')}.${currentYear}`}
+      />
+      {availableDay() && !!trainingDay?.training?.length && (
+        <Button
+          title={'Отменить тренировку'}
+          onPress={() => deleteTrainingDay(trainingDay?.docId!)}
+        />
+      )}
     </Layout>
   )
 }

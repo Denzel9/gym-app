@@ -27,10 +27,12 @@ const AuthProvider: FunctionComponent<{ children: ReactNode }> = ({ children }) 
       await addDoc(collection(db, 'users'), {
         id: user.uid,
         name: user.displayName || '...',
+        lastName: '...',
+        email: user?.email,
         userInfo: {
-          Возрaст: 0,
-          Вес: 0,
-          Рост: 0,
+          age: 0,
+          weight: 0,
+          height: 0,
         },
       }).then(() => {
         addDoc(collection(db, 'calendar'), {

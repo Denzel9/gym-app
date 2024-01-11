@@ -8,6 +8,8 @@ export type TypeRootStackParamsList = {
   Training: undefined
   Profile: undefined
   Auth: undefined
+  PlaningTraining: { date: string } | undefined
+  LastTrainingReport: { date: string } | undefined
 }
 
 export type UseNavigationProp = CompositeNavigationProp<
